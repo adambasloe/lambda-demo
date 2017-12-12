@@ -1,0 +1,22 @@
+version: '3'
+services:
+  nodeapi:
+    build: lambda-node
+    ports:
+     - "8081:3000"
+    depends_on:
+      - database
+  php-frontend:
+    build: lambda-php
+    ports:
+     - "8080:80"
+    volumes:
+     - ./lambda-php/src:/var/www/html
+    depends_on:
+     - nodeapi
+  database:
+    image: mongo:3.6.0-jessie
+    ports:
+     - "27017:27017" 
+    volumes:
+     - ./data/db:/data/db
